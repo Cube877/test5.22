@@ -9,6 +9,8 @@ using namespace std;
 
 int calcGaussianBackground(std::vector<cv::Mat> srcMats, cv::Mat & meanMat, cv::Mat &varMat);
 int gaussianThreshold(cv::Mat srcMat, cv::Mat meanMat, cv::Mat varMat, float weight, cv::Mat & dstMat);
+
+
 //int main()
 //{
 //	VideoCapture cap;
@@ -16,13 +18,13 @@ int gaussianThreshold(cv::Mat srcMat, cv::Mat meanMat, cv::Mat varMat, float wei
 //	cap.open("test.mp4");
 //
 //	if (!cap.isOpened()) {
-//		cout << "Unable to open video!" << endl;
+//		cout << "unable to open video!" << endl;
 //		return -1;
 //	}
 //
 //	int cnt = 0;
 //	Mat frame;
-//	Mat bgMat, subMat, bny_subMat;
+//	Mat bgmat, submat, bny_submat;
 //
 //	while (1)
 //	{
@@ -30,14 +32,14 @@ int gaussianThreshold(cv::Mat srcMat, cv::Mat meanMat, cv::Mat varMat, float wei
 //		cvtColor(frame, frame, COLOR_BGR2GRAY);
 //		if (cnt == 0)
 //		{
-//			frame.copyTo(bgMat);
+//			frame.copyTo(bgmat);
 //		}
 //		else
 //		{
-//			absdiff(frame, bgMat, subMat);
-//			threshold(subMat, bny_subMat, 50, 255, CV_THRESH_BINARY);
+//			absdiff(frame, bgmat, submat);
+//			threshold(submat, bny_submat, 50, 255, CV_THRESH_BINARY);
 //
-//			imshow("b_subMat", bny_subMat);
+//			imshow("b_submat", bny_submat);
 //			imshow("frame", frame);
 //			waitKey(30);
 //		}
@@ -45,6 +47,8 @@ int gaussianThreshold(cv::Mat srcMat, cv::Mat meanMat, cv::Mat varMat, float wei
 //	}
 //	return 0;
 //}
+
+//以上为第一题，以下为第二题
 
 int main()
 {
@@ -58,8 +62,8 @@ int main()
 	}
 
 	int cnt = 0;
-	int nBg = 200;
-	float wVar = 1;
+	int nBg = 50;
+	float wVar = 3;
 	Mat frame;
 	Mat meanMat;
 	Mat varMat;
@@ -74,18 +78,19 @@ int main()
 		{
 			srcMat.push_back(frame);
 		}
-		else if(cnt == nBg)
+		else if (cnt == nBg)
 		{
 			meanMat.create(frame.size(), CV_8UC1);
 			varMat.create(frame.size(), CV_32FC1);
 			calcGaussianBackground(srcMat, meanMat, varMat);
 		}
-		else {
+		else
+		{
 			dstMat.create(frame.size(), CV_8UC1);
 			gaussianThreshold(frame, meanMat, varMat, wVar, dstMat);
 			imshow("result", dstMat);
 			imshow("frame", frame);
-			waitKey(30);
+			waitKey(0);
 		}
 		cnt++;
 	}
@@ -151,6 +156,7 @@ int gaussianThreshold(cv::Mat srcMat, cv::Mat meanMat, cv::Mat varMat, float wei
 
 	return 0;
 }
+
 
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
